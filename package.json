@@ -1,0 +1,26 @@
+{
+  "name": "node_server_archi",
+  "version": "1.0.0",
+  "description": "boilerplate",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.18.2",
+    "bson-ext": "^1.0.5",
+    "express": "^4.16.2",
+    "jsonfile": "^4.0.0",
+    "mongodb": "^3.0.1",
+    "mongoose": "^5.0.0-rc1",
+    "swagger-jsdoc": "^1.9.7",
+    "swagger-ui-express": "^2.0.13",
+    "tcomb": "^3.2.24"
+  },
+  "devDependencies": {
+    "swagger-annotations": "git+https://github.com/outbrain/swagger-annotations.git"
+  }
+}
