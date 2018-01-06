@@ -5,28 +5,36 @@ const morgan = require('morgan')
 const passport = require('passport')
 const app = express()
 
+// import configs
 const swaggerSpecs = require('./config/swagger')
 
-const mainRoute = require('./ressources/main')
-const ingredientsRoute = require('./ressources/ingredients')
-const shoppingListsRoute = require('./ressources/shoppingLists')
-const usersRoute = require('./ressources/users')
+// import ressources
+const ingredientsRessource = require('./ressources/ingredients')
+const shoppingListsRessource = require('./ressources/shoppingLists')
+const usersRessource = require('./ressources/users')
 
+// express config
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(morgan('dev'))
 app.use(passport.initialize())
 
-require('./services/passport')(passport)
-require('./services/mongoDb')
+// initialize configs
+require('./config/passport')(passport)
+require('./config/mongoDb')
 
 // SWAGGER API
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpecs))
 
-// ALL ROUTES
-app.use('/api/v1/', mainRoute)
-app.use('/api/v1/ingredients', ingredientsRoute)
-app.use('/api/v1/shopping-lists', shoppingListsRoute)
-app.use('/api/v1/users', usersRoute)
+// HOME ROUTE
+const homeRoute = (req, res) => {
+	res.json({ test: 'welcome to the home route, authenticate to use the api.' })
+}
+app.get('/api/v1/', homeRoute)
+
+// ALL RESSOURCES
+app.use('/api/v1/ingredients', ingredientsRessource)
+app.use('/api/v1/shopping-lists', shoppingListsRessource)
+app.use('/api/v1/users', usersRessource)
 
 app.listen(3000, () => console.log('http://localhost:3000'))

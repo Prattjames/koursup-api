@@ -1,6 +1,6 @@
 const mongoose = require('mongoose')
 
-const { mongoDbName, mongodbUrl } = require('../config/main')
+const { mongoDbName, mongodbUrl } = require('./main')
 
 mongoose.connect(mongodbUrl)
 mongoose.Promise = global.Promise;

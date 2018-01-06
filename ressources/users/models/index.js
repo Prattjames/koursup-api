@@ -2,7 +2,7 @@ const jwt = require('jsonwebtoken')
 
 const { secret } = require('../../../config/main')
 const { UserModel } = require('./types')
-const { ObjectID } = require('../../../services/mongoDb')
+const { ObjectID } = require('../../../config/mongoDb')
 
 const users = async (id) => {
 	return await UserModel.findOne({ _id: new ObjectID(id) })

@@ -1,4 +1,4 @@
-const { ObjectID } = require('../../../services/mongoDb')
+const { ObjectID } = require('../../../config/mongoDb')
 const { ShoppingListModel } = require('./types')
 
 const removedFields = { user: 0, __v: 0 }
