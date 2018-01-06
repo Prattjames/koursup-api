@@ -7,10 +7,10 @@ const app = express()
 
 const swaggerSpecs = require('./config/swagger')
 
-const mainRoute = require('./routes/main')
-const ingredientsRoute = require('./routes/ingredients')
-const shoppingListsRoute = require('./routes/shoppingLists')
-const usersRoute = require('./routes/users')
+const mainRoute = require('./ressources/main')
+const ingredientsRoute = require('./ressources/ingredients')
+const shoppingListsRoute = require('./ressources/shoppingLists')
+const usersRoute = require('./ressources/users')
 
 
 app.use(bodyParser.json())
