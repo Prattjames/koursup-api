@@ -2,12 +2,14 @@ const { promisify } = require('util')
 const MongoClient = require('mongodb').MongoClient
 const ObjectID = require('mongodb').ObjectID
 
+const { mongoDbName, mongodbUrl } = require('../config/main')
+
 class MongoDb {
 	constructor() {
 		// Connection URL
-		this._url = 'mongodb://admin:admin@ds135817.mlab.com:35817/tests'
+		this._url = mongodbUrl
 		// Database Name
-		this._dbName = 'tests'
+		this._dbName = mongoDbName
 		// Database instance
 		this._db = null
 		this.connectDb()
