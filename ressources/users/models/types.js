@@ -1,46 +1,41 @@
-const t = require('tcomb')
-const { omit } = require('lodash')
 const bcrypt = require('bcrypt')
-const { Id } = require('../../ingredients/models/types')
+const mongoose = require('mongoose')
 
+const Schema = mongoose.Schema
 const saltRounds = 10
 
-const Email = t.refinement(t.String, function (s) {
-  return /@/.test(s);
-});
-
-const User = t.struct({
-	_id: t.maybe(Id),
-	createdAt: t.maybe(t.Date),
-	email: Email,
-	password: t.String
-}, {
-	name: 'User',
-	strict: true,
-	defaultProps: {
-		createdAt: new Date()
-	}
+const UserSchema = new Schema({
+	_id: { type: Schema.Types.ObjectId, default: mongoose.Types.ObjectId },
+	email: { type: String, unique: true, required: true },
+	password: { type: String, required: true },
+	createdAt: { type: Date, default: Date.now }
 })
 
-User.prototype.hashPass = async function () {
+UserSchema.path('email').validate(function (email) {
+	var emailRegex = /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/
+	return emailRegex.test(email)
+}, 'The email is required')
+
+UserSchema.pre('save', async function(next) {
 	try {
 		const hash = await bcrypt.hash(this.password, saltRounds)
 		this.password = hash
-		return omit({ ...this, password: hash }, '_id')
+		next()
+	} catch (error) {
+		throw error
+	}
+})
+
+UserSchema.methods.comparePasswords = async function (infos) {
+	try {
+		return await bcrypt.compare(infos.password, this.password)
 	} catch (error) {
 		throw error
 	}
 }
 
-User.prototype.comparePasswords = async function (hashPass) {
-	try {
-		return await bcrypt.compare(this.password, hashPass)
-	} catch (error) {
-		throw error
-	}
-}
+const UserModel = mongoose.model('User', UserSchema)
 
 module.exports = {
-	User,
-	Id
+	UserModel
 }

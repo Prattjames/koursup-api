@@ -1,22 +1,20 @@
-const t = require('tcomb')
-const { Id, Ingredient } = require('../../ingredients/models/types')
+const mongoose = require('mongoose')
 
-const ShoppingList = t.struct({
-	_id: t.maybe(Id),
-	date: t.Date,
-	ingredients: t.list(Ingredient),
-	archived: t.Boolean,
-	userId: t.Object,
-}, {
-	name: 'ShoppingList',
-	strict: true,
-	defaultProps: {
-		date: new Date(),
-		archived: false
-	}
+const Schema = mongoose.Schema
+
+const ShoppingListSchema = new Schema({
+	_id: { type: Schema.Types.ObjectId, default: mongoose.Types.ObjectId },
+	date: { type: Date, default: Date.now },
+	archived: { type: Boolean, default: false },
+	user: { type: Schema.Types.ObjectId, ref: 'User', required: true },
+	ingredients: [{
+		_id: { type: Schema.Types.ObjectId, get: v => mongoose.Types.ObjectId(v), set: v => mongoose.Types.ObjectId(v) },
+		price: { type: Number, required: true }
+	}]
 })
 
+const ShoppingListModel = mongoose.model('ShoppingList', ShoppingListSchema)
+
 module.exports = {
-	ShoppingList,
-	Id
+	ShoppingListModel
 }

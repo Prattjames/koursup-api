@@ -1,21 +1,17 @@
-const t = require('tcomb')
+const mongoose = require('mongoose')
 
-const Id = t.refinement(t.String, (s) => s.length === 24, 'Id')
-const Ingredient = t.struct({
-	_id: t.maybe(Id),
-	name: t.String,
-	price: t.Number,
-	createdAt: t.Date,
-	userId: t.maybe(t.Object),
-}, {
-	name: 'Ingredient',
-	strict: true,
-	defaultProps: {
-		createdAt: new Date()
-	}
+const Schema = mongoose.Schema
+
+const IngredientSchema = new Schema({
+	_id: {  type: Schema.Types.ObjectId, default: mongoose.Types.ObjectId },
+	name: { type: String, required: true },
+	price: { type: Number, required: true },
+	createdAt: { type: Date, default: Date.now },
+	user: { type: Schema.Types.ObjectId, ref: 'User' }
 })
 
+const IngredientModel = mongoose.model('Ingredient', IngredientSchema)
+
 module.exports = {
-	Id,
-	Ingredient
+	IngredientModel
 }

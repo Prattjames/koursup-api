@@ -1,32 +1,26 @@
 {
-  "name": "node_server_archi",
+  "name": "kours-up-api",
   "version": "1.0.0",
-  "description": "boilerplate",
+  "description": "the api of the kours-up app",
   "main": "index.js",
   "scripts": {
     "start": "nodemon index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
+  "author": "Jean-Claude Pratt-Delzenne",
   "license": "ISC",
   "dependencies": {
     "bcrypt": "^1.0.3",
     "body-parser": "^1.18.2",
-    "bson-ext": "^1.0.5",
     "express": "^4.16.2",
-    "jsonfile": "^4.0.0",
     "jsonwebtoken": "^8.1.0",
     "lodash": "^4.17.4",
-    "mongodb": "^3.0.1",
     "mongoose": "^5.0.0-rc1",
     "morgan": "^1.9.0",
     "passport": "^0.4.0",
     "passport-jwt": "^3.0.1",
     "swagger-jsdoc": "^1.9.7",
-    "swagger-ui-express": "^2.0.13",
-    "tcomb": "^3.2.24"
+    "swagger-ui-express": "^2.0.13"
   },
-  "devDependencies": {
-    "swagger-annotations": "git+https://github.com/outbrain/swagger-annotations.git"
-  }
+  "devDependencies": {}
 }

@@ -1,3 +1,5 @@
+const { isEmpty } = require('lodash')
+
 const { 
 	ingredients,
 	createIngredient,
@@ -27,9 +29,9 @@ const getIngredientByIdRoute = async (req, res) => {
 const createIngredientRoute = async (req, res) => {
 	try {
 		const { name, price } = req.body
-		const newIngredientData = await createIngredient({ name, price, userId: req.user._id }, req.user._id)
+		if (!name || !price) res.status(400).json({ message: "name and price is required" })
+		const newIngredientData = await createIngredient({ name, price, user: req.user._id }, req.user._id)
 		if (newIngredientData) res.json(newIngredientData)
-		else res.status(400).json({})
 	} catch (error) {
 		res.status(400).send({ message: String(error) })
 	}
@@ -37,9 +39,9 @@ const createIngredientRoute = async (req, res) => {
 
 const updateIngredientByIdRoute = async (req, res) => {
 	try {
-		const oldIngredientData = await updateIngredient(req.params.id, { ...req.body, userId: req.user._id })
-		if (oldIngredientData) res.json({ _id: req.params.id, ...req.body })
-		else res.status(304).json(oldIngredientData)
+		if (isEmpty(req.body)) res.status(400).json({ message: "the ingredient data is required" })
+		const updatedIngredient = await updateIngredient(req.params.id, { ...req.body }, req.user._id,)
+		res.json(updatedIngredient)
 	} catch (error) {
 		res.status(400).send({ message: String(error) })
 	}

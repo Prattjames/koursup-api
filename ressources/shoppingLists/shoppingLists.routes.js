@@ -29,9 +29,9 @@ const getShoppingListByIdRoute = async (req, res) => {
 
 const createShoppingListRoute = async (req, res) => {
 	try {
-		const shoppingListData = await createShoppingList({ ...req.body, userId: req.user._id })
-		if (!isEmpty(shoppingListData)) res.status(201).json(shoppingListData)
-		else res.status(204).send()
+		if (isEmpty(req.body)) res.status(400).json({ message: "the shopping-list data is required" })
+		const shoppingListData = await createShoppingList({ ...req.body, user: req.user._id })
+		res.status(201).json(shoppingListData)
 	} catch (error) {
 		console.error(error)
 		res.status(400).json({ message: String(error) })
@@ -40,8 +40,9 @@ const createShoppingListRoute = async (req, res) => {
 
 const updateShoppingListRoute = async (req, res) => {
 	try {
-		await updateShoppingList(req.params.id, { ...req.body, userId: res.user._id }, req.user._id)
-		res.json({ ...req.body, _id: req.params.id })
+		if (isEmpty(req.body)) res.status(400).json({ message: "the shopping-list data is required" })
+		const updatedShoppingList = await updateShoppingList(req.params.id, { ...req.body, user: req.user._id }, req.user._id)
+		res.json(updatedShoppingList)
 	} catch (error) {
 		console.error(error)
 		res.status(400).json({ message: String(error) })
@@ -50,7 +51,7 @@ const updateShoppingListRoute = async (req, res) => {
 
 const archiveShoppingListRoute = async (req, res) => {
 	try {
-		const shoppingListData = await archiveShoppingList(req.params.id, req.user._id)
+		const shoppingListData = await archiveShoppingList(req.params.id, undefined, req.user._id)
 		res.json(shoppingListData)
 	} catch (error) {
 		console.error(error)
